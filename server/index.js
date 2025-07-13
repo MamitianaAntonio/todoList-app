@@ -44,6 +44,21 @@ app.get("/todos/:id", async (req, res) => {
   }
 });
 
+// put or modify a value in the todo
+app.put("/todos/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description } = req.body;
+    const updateTodo = await pool.query(
+      "UPDATE todo SET description = $1 WHERE todo_id = $2",
+      [description, id],
+    );
+    res.json("To do was updated");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.listen(5000, () => {
   console.log("The server has started on the port 5000...");
 });
